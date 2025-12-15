@@ -26,12 +26,12 @@ sudo -i
 ```sh
 apt update
 ```
-### 6. Install AWS CLI on Ubuntu
+### 3. Install AWS CLI on Ubuntu
 ```sh
 snap install aws-cli --classic
 ```
 
-### 7. Configure AWS CLI
+### 4. Configure AWS CLI
 ```sh
 aws configure
 ```
