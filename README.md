@@ -188,3 +188,9 @@ resource "aws_eks_node_group" "my_node_group" {
   depends_on = [aws_eks_cluster.my_cluster]
 }
 ```
+```sh
+terraform init
+```
+```sh
+terraform apply --auto-approve
+```
