@@ -98,3 +98,86 @@ resource "aws_eks_cluster" "my_cluster" {
   ]
 }
 ```
+```sh
+####################
+# Node role for EKS managed node group
+####################
+resource "aws_iam_role" "eks_node_role" {
+  name = "my-cluster-node-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = { Service = "ec2.amazonaws.com" }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "node_AmazonEKSWorkerNodePolicy" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "node_AmazonEKS_CNI_Policy" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+}
+
+resource "aws_iam_role_policy_attachment" "node_ECRReadOnly" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+# Optional but useful: allow SSM access for debugging (Session Manager)
+resource "aws_iam_role_policy_attachment" "node_SSM" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+####################
+# EKS Managed Node Group
+####################
+variable "node_instance_type" {
+  type    = string
+  default = "t3.micro"
+}
+
+variable "node_min_size" {
+  default = 1
+}
+
+variable "node_desired_size" {
+  default = 1
+}
+
+variable "node_max_size" {
+  default = 2
+}
+
+resource "aws_eks_node_group" "my_node_group" {
+  cluster_name    = aws_eks_cluster.my_cluster.name
+  node_group_name = "my-cluster-ng-1"
+  node_role_arn   = aws_iam_role.eks_node_role.arn
+
+  # Use the same subnets you already fetched for the cluster
+  subnet_ids = data.aws_subnets.subnet_ids.ids
+
+  scaling_config {
+    desired_size = var.node_desired_size
+    max_size     = var.node_max_size
+    min_size     = var.node_min_size
+  }
+
+  instance_types = [var.node_instance_type]
+
+  # Optional: tags for the nodes
+  tags = {
+    Name = "my-cluster-node"
+    env  = "dev"
+  }
+
+  # Ensure node group waits for cluster to exist before creating
+  depends_on = [aws_eks_cluster.my_cluster]
+}
+~~~
