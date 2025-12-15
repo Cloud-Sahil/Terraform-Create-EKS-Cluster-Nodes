@@ -106,6 +106,9 @@ terraform apply --auto-approve
 ```
 ### 7. EKS Cluster Nodes File
 ```sh
+nano main.tf
+```
+```sh
 ####################
 # Node role for EKS managed node group
 ####################
