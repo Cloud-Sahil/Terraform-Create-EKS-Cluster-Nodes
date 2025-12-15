@@ -3,7 +3,7 @@
 
 . Launch instance
 
-. Instance type -- EX. (c7i.xlarge)
+. Instance type -- EX. (c7i-flex.large)
 
 . Security groups -- EX. (launch-wizard-1)
 
