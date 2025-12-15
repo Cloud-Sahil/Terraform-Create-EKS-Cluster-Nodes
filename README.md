@@ -197,3 +197,7 @@ terraform init
 ```sh
 terraform apply --auto-approve
 ```
+### 8. Destroy 
+```sh
+terraform destroy --auto-approve
+```
