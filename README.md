@@ -99,6 +99,13 @@ resource "aws_eks_cluster" "my_cluster" {
 }
 ```
 ```sh
+terraform init
+```
+```sh
+terraform apply --auto-approve
+```
+### 7. EKS Cluster Nodes File
+```sh
 ####################
 # Node role for EKS managed node group
 ####################
@@ -180,4 +187,4 @@ resource "aws_eks_node_group" "my_node_group" {
   # Ensure node group waits for cluster to exist before creating
   depends_on = [aws_eks_cluster.my_cluster]
 }
-~~~
+```
