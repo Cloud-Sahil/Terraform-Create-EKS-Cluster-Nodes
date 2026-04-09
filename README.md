@@ -197,7 +197,7 @@ terraform init
 ```sh
 terraform apply --auto-approve
 ```
-### 8. Destroy 
+### 8. Destroy  -- `Do not use this commands in company`
 ```sh
 terraform destroy --auto-approve
 ```
