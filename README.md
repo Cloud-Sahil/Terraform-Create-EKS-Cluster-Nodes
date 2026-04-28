@@ -51,7 +51,7 @@ nano main.tf
 ```
 ```sh
 provider "aws" {
-  region = "ap-south-1"
+  region = "ap-south-1" # Replace with your region name 
 }
 
 resource "aws_iam_role" "cbz_eks_role" {
