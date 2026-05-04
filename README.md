@@ -17,22 +17,22 @@
 ## 2. Commands =
 
 ### 1. Switch to root user
-```sh
+```hcl 
 sudo -i
 ```
 
 
 ### 2. Update the instance
-```sh
+```hcl
 apt update
 ```
 ### 3. Install AWS CLI on Ubuntu
-```sh
+```hcl
 snap install aws-cli --classic
 ```
 
 ### 4. Configure AWS CLI
-```sh
+```hcl
 aws configure
 ```
 
@@ -40,27 +40,27 @@ aws configure
 #### Secret access key
 
 ### 5. Terraform Instalation
-```sh
+```hcl
 wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 ```
 ## update the repo and install the terraform 
-```bash
+```hcl
 sudo nano /etc/apt/sources.list.d/hashicorp.list
 ```
-```bash
+```hcl
 deb [arch=amd64 signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com jammy main
 ```
-```bash
+```hcl
 sudo apt update -y
 sudo apt install terraform
 
 ```
 ### 6. Write EKS Cluster file
-```sh
+```hcl
 nano main.tf
 ```
-```sh
+```hcl
 provider "aws" {
   region = "ap-south-1" # Replace with your region name 
 }
@@ -109,17 +109,17 @@ resource "aws_eks_cluster" "my_cluster" {
   ]
 }
 ```
-```sh
+```hcl
 terraform init
 ```
-```sh
+```hcl
 terraform apply --auto-approve
 ```
 ### 7. EKS Cluster Nodes File
-```sh
+```hcl
 nano main.tf
 ```
-```sh
+```hcl
 ####################
 # Node role for EKS managed node group
 ####################
@@ -202,13 +202,13 @@ resource "aws_eks_node_group" "my_node_group" {
   depends_on = [aws_eks_cluster.my_cluster]
 }
 ```
-```sh
+```hcl
 terraform init
 ```
-```sh
+```hcl
 terraform apply --auto-approve
 ```
 ### 8. Destroy  -- `Do not use this commands in company`
-```sh
+```hcl
 terraform destroy --auto-approve
 ```
